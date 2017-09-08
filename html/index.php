@@ -11,11 +11,16 @@
             system("gpio write 1 1");
             sleep(1);
             system("gpio write 1 0");
+	    system("sudo python /var/www/Python/gpio_turnOffLed.py");
         ?>
-        <button style="border-radius: 5%;" onclick="toggleLed()">Toggle Led</button>
+        <button style="border-radius: 10px;" onclick="toggleLed();">Toggle Led</button>
         <br>
-        <button style="border-radius: 5%;" onclick="brightenLed()">Brighten and Dim Led</button>
+        <button style="border-radius: 10px;" onclick="brightenLed();">Brighten and Dim Led</button>
+	<br>
+	<button style="border-radius: 10px;" onclick="turnOffLed();">Turn Off Led</button>
         <script src="lightLed.js"></script>
+	<br>
+	<a href="setTime.html"><button style="border-radius: 10px;">Set Time</button></a>
     </body>
 </html>
 
