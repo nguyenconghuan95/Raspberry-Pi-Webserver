@@ -21,6 +21,8 @@
         <script src="lightLed.js"></script>
 	<br>
 	<a href="setTime.html"><button style="border-radius: 10px;">Set Time</button></a>
+	<br>
+	<a href="schedule.php"><button style="border-radius: 10px;">Schedule</button></a>
     </body>
 </html>
 
