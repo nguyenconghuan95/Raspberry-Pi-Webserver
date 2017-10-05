@@ -16,8 +16,17 @@
 </style>
 <body style="background-color: #A9A9A9;">
     <h1 style="color: white; text-align: center;">RASPBERRY GPIO TEST</h1>
-    <form action="setTime.php" method="post">
+    <form action="setTime.php?change=1" method="post">
 	<div>
+	    Day:<select name='day'>");
+                    <option value='Mon'>Monday</option>
+                    <option value='Tue'>Tuesday</option>
+                    <option value='Wed'>Wednesday</option>
+                    <option value='Thu'>Thursday</option>
+                    <option value='Fri'>Friday</option>
+                    <option value='Sat'>Saturday</option>
+                    <option value='Sun'>Sunday</option>
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;
 	    Date:<input type="date" name="date">&nbsp;&nbsp;&nbsp;&nbsp;
 	    Time:<input type="time" name="time"><br><br> 
 	    <input type="submit" value="Submit" style="border-radius: 10px;"></input>
