@@ -35,10 +35,10 @@
     if (isset($_POST["submitDelete"])) {
 	for ($i = 1; $i <= $_GET["count"]; $i++) {
 	    $dayOn = "dayOn".$i;
-            $timeOn = "timeOn".$i;
+        $timeOn = "timeOn".$i;
 	    $dayOff = "dayOff".$i;
-            $timeOff = "timeOff".$i;
-            $device = "device".$i;
+        $timeOff = "timeOff".$i;
+        $device = "device".$i;
 	    $sql = "DELETE FROM schedule WHERE DAY_ON='".$_POST[$dayOn]."' AND TIME_ON='".$_POST[$timeOn]."' AND DAY_OFF='".$_POST[$dayOff]."' AND TIME_OFF='".$_POST[$timeOff]."' AND DEVICE='".$_POST[$device]."'";
 	    if ($conn->query($sql) === TRUE) {
                 echo($i.". New record updated sucessfully!!!<br>");

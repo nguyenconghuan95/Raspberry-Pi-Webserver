@@ -1,31 +1,21 @@
 <!DOCTYPE HTML>
 <html>
-<style>
-    .btn {
-	border-radius: 10px;
-    }
-
-    body {
-	background-color: #A9A9A9;
-    }
-
-    h1 {
-	color: white;
-	text-align: center;
-    }
-
-    .number {
-	width: 50px;
-    }
-</style>
+<head>
+    <title>Schedule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
 <body>
-    <h1>WATER SCHEDULE</h1>
+    <header>
+        <h1>WATER SCHEDULE</h1>
+    </header>
+    <div style="padding: 5%; height: 100%;">
     <strong>Choose (1-10) number of settings you want to set or delete:<strong><br>
     <form action="#" method="post">
-	<input class="number" type="number" name="number" min="0" max="10">&nbsp;&nbsp;&nbsp;&nbsp;
-	<input class="btn"  type="submit" name="Add" value="Add">&nbsp;&nbsp;&nbsp;&nbsp;
-	<input class="btn" type="submit" name="Delete" value="Delete">&nbsp;&nbsp;&nbsp;&nbsp;
-	<input class="btn" type="submit" name="schedule" value="Water Schedule"><br><br>
+	<input style="width: 50px;"  type="number" name="number" min="0" max="10">&nbsp;&nbsp;&nbsp;&nbsp;
+	<input style="border-radius: 10px;"  type="submit" name="Add" value="Add">&nbsp;&nbsp;&nbsp;&nbsp;
+	<input style="border-radius: 10px;" type="submit" name="Delete" value="Delete">&nbsp;&nbsp;&nbsp;&nbsp;
+	<input style="border-radius: 10px;" type="submit" name="schedule" value="Water Schedule"><br><br>
     </form>
     <?php
         if (isset($_POST["Add"])) {
@@ -63,7 +53,7 @@
 		    echo("<option value='Led2'>Led 2</option>");
 		echo("</select><br><br>");
 	    }
-	    echo("<input class='btn' type='submit' name='submitAdd' value='Add'>");
+	    echo("<input style='border-radius: 10px;'  type='submit' name='submitAdd' value='Add'>");
             echo("</form>");
         }
 
@@ -97,10 +87,10 @@
 		echo("Time-Off:<input type='time' name='$timeOff'>&nbsp;&nbsp;&nbsp;&nbsp;");
                 echo("Device:<select name='$device'>");
                     echo("<option value='Led1'>Led 1</option>");
-		    echo("<option value='Led2'>Led 2</option>");
+		    		echo("<option value='Led2'>Led 2</option>");
                 echo("</select><br><br>");
 	    }
-            echo("<input class='btn' type='submit' name='submitDelete' value='Delete'>");
+            echo("<input style='border-radius: 10px;' type='submit' name='submitDelete' value='Delete'>");
             echo("</form>");
 	}
 
@@ -121,7 +111,7 @@
 	    $sql = "SELECT * FROM schedule";
 	    $records = mysqli_query($conn, $sql);
 	    if ($records) {
-		echo("<table width='600' border='1' cellpadding='1' cellspacing='1'>");
+		echo("<table style='margin: auto;' width='600' border='1' cellpadding='1' cellspacing='1'>");
 		echo("<tr>");
 		    echo("<th>DAY_ON</th>");
 		    echo("<th>TIME_ON</th>");
@@ -145,5 +135,6 @@
 	}
 
     ?>
+	</div>
 </body>
 </html>

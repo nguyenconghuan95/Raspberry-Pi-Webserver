@@ -18,6 +18,14 @@ function turn(led, name) {
             return("fail");
         }
     }
+	
+	//Change the picture on Web
+	if (led == 'On') {
+		document.getElementById(name).src="image/onbutton.jpg";
+	}
+	else {
+		document.getElementById(name).src="image/offbutton.jpg";
+	}
     alert("Turned " + led + " " + name);
     return 0;
 }

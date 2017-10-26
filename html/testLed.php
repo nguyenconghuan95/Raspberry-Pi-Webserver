@@ -13,8 +13,8 @@
     }
 	echo $_GET["device"];
     echo("Connect Successful!!!<br>");
-	$sql = "UPDATE led SET STATUS='". $_GET["action"] ."' WHERE LED='". $_GET["device"] ."'";
-	$sql1 = "UPDATE led SET CHANGED=1 WHERE LED='". $_GET["device"] . "'";
+	$sql = "UPDATE led SET STATUS='". $_POST["action"] ."' WHERE LED='". $_POST["device"] ."'";
+	$sql1 = "UPDATE led SET CHANGED=1 WHERE LED='". $_POST["device"] . "'";
 	$conn->query($sql);
 	$conn->query($sql1);
     $conn->close();

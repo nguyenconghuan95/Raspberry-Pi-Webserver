@@ -1,21 +1,15 @@
 <!DOCTYPE HTML>
 <html>
-<style>
-    .txt {
-	width: 100px;
-	text-align: right;
-    }
-    .number {
-	width: 50px;
-	text-align: right;
-    }
-
-    div {
-	color: white;
-    }
-</style>
-<body style="background-color: #A9A9A9;">
-    <h1 style="color: white; text-align: center;">RASPBERRY GPIO TEST</h1>
+<head>
+    <title>Set up Time</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+    <header>
+        <h1>SET UP TIME</h1>
+    </header>
+    <div style="padding: 5%; height: 100%;">
     <form action="setTime.php?change=1" method="post">
 	<div>
 	    Day:<select name='day'>");
@@ -26,11 +20,12 @@
                     <option value='Fri'>Friday</option>
                     <option value='Sat'>Saturday</option>
                     <option value='Sun'>Sunday</option>
-                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+             </select>&nbsp;&nbsp;&nbsp;&nbsp;
 	    Date:<input type="date" name="date">&nbsp;&nbsp;&nbsp;&nbsp;
 	    Time:<input type="time" name="time"><br><br> 
 	    <input type="submit" value="Submit" style="border-radius: 10px;"></input>
 	</div>
     </form>
+	</div>
 </body>
 </html>
