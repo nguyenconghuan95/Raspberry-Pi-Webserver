@@ -1,29 +1,31 @@
 <!DOCTYPE HTML>
 <html>
-<style>
-    .txt {
-	width: 100px;
-	text-align: right;
-    }
-    .number {
-	width: 50px;
-	text-align: right;
-    }
-
-    div {
-	color: white;
-    }
-</style>
-<body style="background-color: #A9A9A9;">
-    <h1 style="color: white; text-align: center;">RASPBERRY GPIO TEST</h1>
-    <form action="setTime.php" method="post">
+<head>
+    <title>Set up Time</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+    <header>
+        <h1>SET UP TIME</h1>
+    </header>
+    <div style="padding: 5%; height: 100%;">
+    <form action="setTime.php?change=1" method="post">
 	<div>
-	    Day:<input class="number" name="day" type="number" max="31">&nbsp;&nbsp;&nbsp;&nbsp;
-	    Month:<input class="txt" name="month" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
-	    Hour:<input class="number" name="hour" type="number" max="23">&nbsp;&nbsp;&nbsp;&nbsp;
-	    Minute:<input class="number" name="minute" type="number" max="59"><br><br> 
+	    Day:<select name='day'>");
+                    <option value='Mon'>Monday</option>
+                    <option value='Tue'>Tuesday</option>
+                    <option value='Wed'>Wednesday</option>
+                    <option value='Thu'>Thursday</option>
+                    <option value='Fri'>Friday</option>
+                    <option value='Sat'>Saturday</option>
+                    <option value='Sun'>Sunday</option>
+             </select>&nbsp;&nbsp;&nbsp;&nbsp;
+	    Date:<input type="date" name="date">&nbsp;&nbsp;&nbsp;&nbsp;
+	    Time:<input type="time" name="time"><br><br> 
 	    <input type="submit" value="Submit" style="border-radius: 10px;"></input>
 	</div>
     </form>
+	</div>
 </body>
 </html>
