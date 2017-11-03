@@ -6,10 +6,17 @@
 
 #define MeasureTaskPeriod     2400
 #define GetControlTaskPeriod  2
+<<<<<<< HEAD
 #define FirstZoneHumid          0x01
 #define FirstZoneTemp           0x02
 #define SecondZoneHumid          0x03
 #define SecondZoneTemp           0x04
+=======
+#define FirstZoneHumid        0x01
+#define FirstZoneTemp         0x02
+#define SecondZoneHumid       0x03
+#define SecondZoneTemp        0x04
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
 
 BH1750 lightMeter;
 
@@ -22,6 +29,10 @@ bool GetControlTaskFlag = 0;
 uint16_t MeasureTaskCount = 0;
 char GetControlTaskCount = 0; 
 
+<<<<<<< HEAD
+=======
+//Function timing the other functions
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
 void timing(void) 
 {
   delay(250);
@@ -35,9 +46,17 @@ void timing(void)
   }
 }
 
+<<<<<<< HEAD
 int measureHumid(char zone) {
   if (zone == 1) {
     digitalWrite(12, FirstZoneHumid && 0x01);
+=======
+//Functions measure the parameter
+int measureHumid(char zone) 
+{
+  if (zone == 1) {
+    digitalWrite(12, FirstZoneHumid && 0x01);         
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
     digitalWrite(13, (FirstZoneHumid && 0x02) >> 1);
     digitalWrite(14, (FirstZoneHumid && 0x04) >> 2); 
   }
@@ -54,7 +73,12 @@ int measureHumid(char zone) {
   return percent;
 }
 
+<<<<<<< HEAD
 int measureTemp(char zone) {
+=======
+int measureTemp(char zone) 
+{
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
   if (zone == 1) {
     digitalWrite(12, FirstZoneTemp && 0x01);
     digitalWrite(13, (FirstZoneTemp && 0x02) >> 1);
@@ -71,7 +95,12 @@ int measureTemp(char zone) {
   return value;
 }
 
+<<<<<<< HEAD
 uint16_t measureLux(char zone) {
+=======
+uint16_t measureLux(char zone) 
+{
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
   uint16_t lux = lightMeter.readLightLevel();
   Serial.print("Light: ");
   Serial.print(lux);
@@ -79,7 +108,12 @@ uint16_t measureLux(char zone) {
   return lux;
 }
 
+<<<<<<< HEAD
 void passValues(char zone, int humid, uint16_t lux, int temp) {
+=======
+void passValues(char zone, int humid, uint16_t lux, int temp) 
+{
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
   Serial.print("Ket noi toi web ");
   Serial.println(host);
   WiFiClient client;
@@ -102,6 +136,7 @@ void GetControl()
   }
   String url = "/getControl.php";
   client.print(String("GET " + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n"));
+<<<<<<< HEAD
   delay(100);
   while (client.available()) {
     String line = client.readStringUntil('\r');
@@ -109,6 +144,11 @@ void GetControl()
       String data = line;
       Serial.println(data);
     }
+=======
+  while (client.available()) {
+    String line = client.readStringUntil('\r');
+    Serial.println(line); 
+>>>>>>> 2058f51931f21255492bc5495b8d522815aad887
   }
 }
 
