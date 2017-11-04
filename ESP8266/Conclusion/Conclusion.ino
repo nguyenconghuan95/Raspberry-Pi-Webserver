@@ -1,17 +1,18 @@
+#include <LiquidCrystal_I2C.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <Wire.h>
 #include <BH1750.h>
 
-#define MeasureTaskPeriod     2400
+#define MeasureTaskPeriod     80
 #define GetControlTaskPeriod  2
-#define FirstZoneHumid          0x01
-#define FirstZoneTemp           0x02
-#define SecondZoneHumid          0x03
-#define SecondZoneTemp           0x04
+#define humidPin          0x01
+#define tempPin           0x02
+#define luxPin            0x03
 
 BH1750 lightMeter;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const char* ssid = "Miki1";
 const char* password = "nghi123lun";
@@ -19,12 +20,14 @@ const char* host = "192.168.1.27";
 
 bool MeasureTaskFlag = 0;
 bool GetControlTaskFlag = 0;
+bool LCDTurnOffFlag = 0;
 uint16_t MeasureTaskCount = 0;
 char GetControlTaskCount = 0; 
 
 void timing(void) 
 {
   delay(250);
+//  static int LCDTurnOffCount;
   MeasureTaskCount++;
   GetControlTaskCount++;
   if (MeasureTaskCount >= MeasureTaskPeriod) {
@@ -33,50 +36,6 @@ void timing(void)
   else if (GetControlTaskCount >= GetControlTaskPeriod) {
     GetControlTaskFlag = 1;
   }
-}
-
-int measureHumid(char zone) {
-  if (zone == 1) {
-    digitalWrite(12, FirstZoneHumid && 0x01);
-    digitalWrite(13, (FirstZoneHumid && 0x02) >> 1);
-    digitalWrite(14, (FirstZoneHumid && 0x04) >> 2); 
-  }
-  else {
-    digitalWrite(12, SecondZoneHumid && 0x01);
-    digitalWrite(13, (SecondZoneHumid && 0x02) >> 1);
-    digitalWrite(14, (SecondZoneHumid && 0x04) >> 2);
-  }
-  int value = analogRead(A0);     // Ta sẽ đọc giá trị hiệu điện thế của cảm biến
-  int percent = map(value, 1023, 0, 0, 100);
-  Serial.print("Do am do duoc: ");
-  Serial.print(percent);//Xuất ra serial Monitor
-  Serial.println("%");
-  return percent;
-}
-
-int measureTemp(char zone) {
-  if (zone == 1) {
-    digitalWrite(12, FirstZoneTemp && 0x01);
-    digitalWrite(13, (FirstZoneTemp && 0x02) >> 1);
-    digitalWrite(14, (FirstZoneTemp && 0x04) >> 2); 
-  }
-  else {
-    digitalWrite(12, SecondZoneTemp && 0x01);
-    digitalWrite(13, (SecondZoneTemp && 0x02) >> 1);
-    digitalWrite(14, (SecondZoneTemp && 0x04) >> 2);
-  }
-  int value = analogRead(A0);
-  Serial.print("Nhiet do do duoc: ");
-  Serial.println(value);
-  return value;
-}
-
-uint16_t measureLux(char zone) {
-  uint16_t lux = lightMeter.readLightLevel();
-  Serial.print("Light: ");
-  Serial.print(lux);
-  Serial.println(" lx");
-  return lux;
 }
 
 void passValues(char zone, int humid, uint16_t lux, int temp) {
@@ -91,30 +50,10 @@ void passValues(char zone, int humid, uint16_t lux, int temp) {
   client.print(String("GET " + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n"));
 }
 
-void GetControl()
-{
-  Serial.print("Ket noi toi web: ");
-  Serial.println(host);
-  WiFiClient client;
-  const int httpPort = 80;
-  if (!client.connect(host, httpPort)) {
-    Serial.println("Khong the ket noi toi " + String(host));
-  }
-  String url = "/getControl.php";
-  client.print(String("GET " + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n"));
-  delay(100);
-  while (client.available()) {
-    String line = client.readStringUntil('\r');
-    if (String(line[1]) == String("[")) {
-      String data = line;
-      Serial.println(data);
-    }
-  }
-}
 
 void setup() 
 {
-  Serial.begin(115200);//Mở cổng Serial ở mức 115200
+  Serial.begin(115200);   //Mở cổng Serial ở mức 115200
   //setup chân lấy ADC
   pinMode (12, OUTPUT);
   pinMode(13, OUTPUT);
@@ -124,6 +63,8 @@ void setup()
   //Set up I2C BH1750
   Wire.begin();
   lightMeter.begin();
+
+  lcd_init();
   
   //Kết nối với mạng wifi chung
   Serial.println();
@@ -143,12 +84,26 @@ void setup()
 void loop() 
 {
   timing();
+  //Turn off LCD of measureTask
+  lcd_timingOff_backlight(8);
   if (MeasureTaskFlag) {
-    int humidValue = measureHumid(1);
-    uint16_t luxValue = measureLux(1);
-    int tempValue = measureTemp(1);
+    
+    //Measure in Zone 1, display LCD and send the values to server
+    int humidValue = measure(1, humidPin);
+    uint16_t luxValue = measure(1, luxPin);
+    int tempValue = measure(1, tempPin);
+    lcd.clear();
+    lcd_display_measure(1, tempValue, humidValue, luxValue);
     passValues(1, humidValue, luxValue, tempValue);
+    
+    //Measure in Zone 2, display LCD and send the values to server
+    humidValue = measure(2, humidPin);
+    luxValue = measure(2, luxPin);
+    tempValue = measure(2, tempPin);
+    lcd_display_measure(2, tempValue, humidValue, luxValue);
     passValues(2, humidValue, luxValue, tempValue);
+    
+    LCDTurnOffFlag = 1;
     MeasureTaskFlag = 0;
     MeasureTaskCount = 0;    
   }

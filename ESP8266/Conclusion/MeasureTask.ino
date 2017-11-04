@@ -1,4 +1,4 @@
-int measure(int zone, char type) {
+uint16_t measure(int zone, char type) {
   char pinValue = type + (zone-1)*3;
   digitalWrite(12, pinValue && 0x01);
   digitalWrite(12, (pinValue && 0x02) >> 1);

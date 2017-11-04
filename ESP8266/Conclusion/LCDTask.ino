@@ -14,3 +14,16 @@ void lcd_display_measure(int zone, int temp, int humid, uint16_t lux) {
   lcd.print(str); 
 }
 
+void lcd_timingOff_backlight(int sec) {
+  static int LCDTurnOffCount;
+  int period = sec * 4;
+  if (LCDTurnOffFlag == 1) {
+    LCDTurnOffCount++;
+  }
+  if (LCDTurnOffCount >= period) {
+    lcd.noBacklight();
+    LCDTurnOffCount = 0;
+    LCDTurnOffFlag = 0;
+  }
+}
+
