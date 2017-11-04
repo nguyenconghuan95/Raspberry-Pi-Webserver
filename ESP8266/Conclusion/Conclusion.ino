@@ -6,16 +6,10 @@
 
 #define MeasureTaskPeriod     2400
 #define GetControlTaskPeriod  2
-
 #define FirstZoneHumid          0x01
 #define FirstZoneTemp           0x02
 #define SecondZoneHumid          0x03
 #define SecondZoneTemp           0x04
-#define FirstZoneHumid        0x01
-#define FirstZoneTemp         0x02
-#define SecondZoneHumid       0x03
-#define SecondZoneTemp        0x04
-
 
 BH1750 lightMeter;
 
@@ -28,9 +22,6 @@ bool GetControlTaskFlag = 0;
 uint16_t MeasureTaskCount = 0;
 char GetControlTaskCount = 0; 
 
-
-
-//Function timing the other functions
 void timing(void) 
 {
   delay(250);
@@ -44,11 +35,9 @@ void timing(void)
   }
 }
 
-//Functions measure the parameter
-int measureHumid(char zone) 
-{
+int measureHumid(char zone) {
   if (zone == 1) {
-    digitalWrite(12, FirstZoneHumid && 0x01);         
+    digitalWrite(12, FirstZoneHumid && 0x01);
     digitalWrite(13, (FirstZoneHumid && 0x02) >> 1);
     digitalWrite(14, (FirstZoneHumid && 0x04) >> 2); 
   }
@@ -65,8 +54,7 @@ int measureHumid(char zone)
   return percent;
 }
 
-int measureTemp(char zone) 
-{
+int measureTemp(char zone) {
   if (zone == 1) {
     digitalWrite(12, FirstZoneTemp && 0x01);
     digitalWrite(13, (FirstZoneTemp && 0x02) >> 1);
@@ -83,8 +71,7 @@ int measureTemp(char zone)
   return value;
 }
 
-uint16_t measureLux(char zone) 
-{
+uint16_t measureLux(char zone) {
   uint16_t lux = lightMeter.readLightLevel();
   Serial.print("Light: ");
   Serial.print(lux);
@@ -92,8 +79,7 @@ uint16_t measureLux(char zone)
   return lux;
 }
 
-void passValues(char zone, int humid, uint16_t lux, int temp) 
-{
+void passValues(char zone, int humid, uint16_t lux, int temp) {
   Serial.print("Ket noi toi web ");
   Serial.println(host);
   WiFiClient client;
