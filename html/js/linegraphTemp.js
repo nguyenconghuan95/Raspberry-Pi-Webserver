@@ -18,7 +18,7 @@ $(document).ready(function(){
 				labels: time,
 				datasets: [
 					{
-						label: "Temperature",
+						label: "Temperature (ºC)",
 						fill: false,
 						lineTension: 0.1,
 						backgroundColor: "rgba(29, 202, 255, 0.75)",

@@ -1,8 +1,6 @@
 $('input[type="checkbox"]').on('change', function() {
 	var id = $(this).attr('id');
-	alert(id);
 	var isChecked = $(this).is(':checked');
-	alert(isChecked);
 
 	if (isChecked) {
 		$.post("testLed.php", {action: 'On', device: id});

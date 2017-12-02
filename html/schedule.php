@@ -38,7 +38,7 @@
                     echo("<option value='Sun'>Sunday</option>");
                 echo("</select>&nbsp;&nbsp;&nbsp;&nbsp");
                 echo("Time-On:<input type='time' name='$timeOn'>&nbsp;&nbsp;&nbsp;&nbsp;"); 
-		echo("Day-Off:<select name='$dayOff'>");
+			echo("Day-Off:<select name='$dayOff'>");
                     echo("<option value='Mon'>Monday</option>");
                     echo("<option value='Tue'>Tuesday</option>");
                     echo("<option value='Wed'>Wednesday</option>");

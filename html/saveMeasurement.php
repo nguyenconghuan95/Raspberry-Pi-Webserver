@@ -1,11 +1,14 @@
 <?php
+	include ("deviceControl.php");
+
 	$servername = "localhost";
     $username = "admin";
     $password = "admin";
     $dbname = "smartGarden";
 
     //Create Connection
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
+	$conn = mysqli_connect($servername, $username, $password, $dbname);
+	$handler = new deviceControl();
 
     //Check Connection
     if (mysqli_connect_errno()) {
@@ -13,10 +16,21 @@
     }
 	echo "Connect sucessfull!!!";
 
+	//Compare to limit parameters
+	switch($_GET["zone"]) {
+		case 1:
+			$handler -> handleLimit($conn, 1);
+			break;
+		case 2:
+			$handler -> handleLimit($conn, 2);
+			break;
+	}
+
+	
+	//Update measurement table
 	$sql = "SELECT ZONE FROM measurement";
 	$result = mysqli_query($conn, $sql);
 	$count = mysqli_num_rows($result);
-	echo $count;
 
 	while ($count >= 10) {
 		$sql = "DELETE FROM measurement WHERE ZONE LIMIT 1";

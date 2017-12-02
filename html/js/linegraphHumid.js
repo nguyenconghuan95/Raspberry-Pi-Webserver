@@ -18,7 +18,7 @@ $(document).ready(function() {
 				labels: time,
 				datasets: [
 					{
-						label: "Humidity",
+						label: "Humidity (%)",
 						fill: false,
 						lineTension: 0.1,
 						backgroundColor: "rgba(59, 89, 152, 0.75)",

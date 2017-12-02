@@ -18,7 +18,7 @@ $(document).ready(function(){
 				labels: time,
 				datasets: [
 					{
-						label: "Luminosity",
+						label: "Luminosity (lux)",
 						fill: false,
 						lineTension: 0.1,
 						backgroundColor: "rgba(211, 72, 54, 0.75)",
