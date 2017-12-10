@@ -1,39 +1,55 @@
-$(document).ready(function(){
+$(document).ready(function() {
 	$.ajax({
 		url : "/measureLuxData.php",
 		type : "GET",
-		success : function(data){
-			console.log(data);
-
+		success : function(data) {
+			
 			data = JSON.parse(data);
-			var time = [];
-			var lux = [];
+			var measureTime = [];
+            var luxZone1 = [];
+            var luxZone2 = [];
 
 			for(var i in data) {
-				time.push(data[i].TIME);
-				lux.push(data[i].LUMINOSITY);
+                if (data[i].ZONE == 1) {
+                    measureTime.push(data[i].TIME);
+                    luxZone1.push(data[i].LUMINOSITY);
+                }
+                else {
+                    luxZone2.push(data[i].LUMINOSITY);
+                }
 			}
 
-			var chartdata = {
-				labels: time,
+            
+            var chartdata = {
+				labels: measureTime,
 				datasets: [
 					{
-						label: "Luminosity (lux)",
+						label: "Zone 1 Lux (%)",
 						fill: false,
 						lineTension: 0.1,
-						backgroundColor: "rgba(211, 72, 54, 0.75)",
-						borderColor: "rgba(211, 72, 54, 1)",
-						pointHoverBackgroundColor: "rgba(211, 72, 54, 1)",
-						pointHoverBorderColor: "rgba(211, 72, 54, 1)",
-						data: lux
-					}
+						backgroundColor: "rgba(51, 255, 51, 0.75)",
+						borderColor: "rgba(51, 255, 51, 1)",
+						pointHoverBackgroundColor: "rgba(51, 255, 51, 1)",
+						pointHoverBorderColor: "rgba(51, 255, 51, 1)",
+						data: luxZone1
+                    },
+                    {
+                        label: "Zone 2 Lux (%)",
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(0, 51, 0, 0.75)",
+						borderColor: "rgba(0, 51, 0, 1)",
+						pointHoverBackgroundColor: "rgba(0, 51, 0, 1)",
+						pointHoverBorderColor: "rgba(0, 51, 0, 1)",
+						data: luxZone2
+                    },
 				]
-			};
+            };
+            
+            var ctx = $("#luxGraph");
 
-			var ctx = $("#luxGraph");
-
-			var LineGraph = new Chart(ctx, {
-				type: 'line',
+            var LineGraph = new Chart(ctx, {
+                type: 'line',
 				data: chartdata,
 				options: {
                     responsive: true,
@@ -56,11 +72,11 @@ $(document).ready(function(){
                         }]
                     }
                 }
-
-			});
-		},
+            });
+        },
 		error : function(data) {
 
 		}
 	});
+
 });

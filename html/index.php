@@ -21,14 +21,16 @@
 	$a = mysqli_fetch_array($result);
 	$temp1 = $a[1];
 	$humid1 = $a[2];
-	$lux1 = $a[3];
+    $lux1High = $a[3];
+    $lux1Low = $a[4];
 
 	$sql = "SELECT * FROM limitIndex WHERE ZONE=2";
     $result = mysqli_query($conn, $sql);
     $a = mysqli_fetch_array($result);
     $temp2 = $a[1];
     $humid2 = $a[2];
-    $lux2 = $a[3];
+    $lux2High = $a[3];
+    $lux2Low = $a[4];
 
 ?>
 
@@ -283,8 +285,8 @@
 					<td><strong>High Luminosity</strong>
 						<form action="#" method="post">
                             <?php
-                                echo("<input id='LimitLuxHigh1'  type='range' min='0' max='10000' step='100' value='".$lux1."'/>");
-                                echo("<br><span id='LimitLuxHigh1Range'>".$lux1."</span>");
+                                echo("<input id='LimitLuxHigh1'  type='range' min='0' max='10000' step='100' value='".$lux1High."'/>");
+                                echo("<br><span id='LimitLuxHigh1Range'>".$lux1High."</span>");
                             ?>
 
                         </form>
@@ -294,8 +296,8 @@
 					<td><strong>Low Luminosity</strong>
 						<form action="#" method="post">
                             <?php
-                                echo("<input id='LimitLuxLow1'  type='range' min='0' max='10000' step='100' value='".$lux1."'/>");
-                                echo("<br><span id='LimitLuxLow1Range'>".$lux1."</span>");
+                                echo("<input id='LimitLuxLow1'  type='range' min='0' max='10000' step='100' value='".$lux1Low."'/>");
+                                echo("<br><span id='LimitLuxLow1Range'>".$lux1Low."</span>");
                             ?>
 
                         </form>
@@ -328,8 +330,8 @@
                     <td><strong>High Luminosity</strong>
                         <form action="#" method="post">
                             <?php
-                                echo("<input id='LimitLuxHigh2'  type='range' min='0' max='10000' step='100' value='".$lux2."'/>");
-                                echo("<br><span id='LimitLuxHigh2Range'>".$lux2."</span>");
+                                echo("<input id='LimitLuxHigh2'  type='range' min='0' max='10000' step='100' value='".$lux2High."'/>");
+                                echo("<br><span id='LimitLuxHigh2Range'>".$lux2High."</span>");
                                 mysqli_close($conn);
                        		?>
 
@@ -340,8 +342,8 @@
                     <td><strong>Low Luminosity</strong>
                         <form action="#" method="post">
                             <?php
-                                echo("<input id='LimitLuxLow2'  type='range' min='0' max='10000' step='100' value='".$lux2."'/>");
-                                echo("<br><span id='LimitLuxLow2Range'>".$lux2."</span>");
+                                echo("<input id='LimitLuxLow2'  type='range' min='0' max='10000' step='100' value='".$lux2Low."'/>");
+                                echo("<br><span id='LimitLuxLow2Range'>".$lux2Low."</span>");
                                 mysqli_close($conn);
                        		?>
 

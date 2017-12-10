@@ -10,7 +10,7 @@
         echo("Failed to connect to MySQL: ". mysqli_connect_error());
     }
 
-    $sql = "SELECT TIME, TEMPERATURE FROM measurement WHERE ZONE=1";
+    $sql = "SELECT ZONE, TIME, TEMPERATURE FROM measurement";
     $result = mysqli_query($conn, $sql);
 
     $data = array();
