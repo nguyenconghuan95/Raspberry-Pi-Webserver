@@ -1,3 +1,7 @@
+//Enable 74hc4051 to low
+//3.3V for humid sensor
+
+
 #include <ArduinoJson.h>
 #include <Ticker.h>
 #include <ESP8266WiFi.h>
@@ -6,15 +10,17 @@
 #include <BH1750.h>
 #include "Define.h"
 #include "LCD.h"
+#include "EEPROMHandle.h"
 
 Ticker sysTick;
 
 BH1750 lightMeterZone1;
 BH1750 lightMeterZone2(0x5C);
 DynamicJsonBuffer jsonBuffer;
+//EEPROMHandle EHandle;
 
-char* ssid = "Miki1";
-char* password = "nghi123lun";
+//char* ssid;
+//char* password;
 const char* host = "192.168.1.27";
 
 volatile bool flagMeasure = 0;
@@ -30,28 +36,51 @@ volatile unsigned long startCountingTime;
 String dataControl[10];
 
 void setup() {
+  bool newFlag = 0;
   Serial.begin(115200);   //Mở cổng Serial ở mức 115200
   //Set up I2C BH1750
   Wire.begin();
-  lightMeterZone1.begin();
-  lightMeterZone2.begin();
-
   lcd_init();
+
+  Serial.println();
+  Serial.println("Do you want to reset?");
+  int currentTime = millis();
+  while (millis() - currentTime < 5000)
+  {
+    char res = getChar();
+    if (res == 'y' || res == 'Y') {
+      newFlag = 1;
+      break;
+    }
+    else if (res == 'n' || res == 'N') {
+      break;
+    }
+  }
+  if (newFlag == 1)
+    configureNewWifi();
+  else
+    configureOldWifi();
+  configureMeasure();
+  DoControlFirstTime();
   
   //Kết nối với mạng wifi chung
-  Serial.println();
-  Serial.println();
-  Serial.print("Ket noi toi mang wifi ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println();
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-  sysTick.attach(SEQ_TIME_TICKER_SEC, tickHandler);  
+//  Serial.println();
+//  Serial.println();
+//  Serial.print("Ket noi toi mang wifi ");
+//  Serial.println(ssid);
+//  lcd_write_str(0, 0, "Connect to Miki1");
+//  WiFi.begin(ssid, password);
+//  while (WiFi.status() != WL_CONNECTED) {
+//    delay(500);
+//    Serial.print(".");
+//  }
+//  lcd_write_str(0, 1, "Connected");
+//  Serial.println();
+//  Serial.print("IP address: ");
+//  Serial.println(WiFi.localIP());
+  sysTick.attach(SEQ_TIME_TICKER_SEC, tickHandler);
+  delay(2000);
+  lcd_clear_display();  
 }
 
 void tickHandler() 
@@ -66,28 +95,20 @@ void tickHandler()
   }
 }
 
-void configureButtonDisplay()
-{
-  pinMode(DISPLAY_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(DISPLAY_PIN), buttonDisplayHandler, HIGH);
-}
-
-void buttonDisplayHandler()
-{
-  if (millis() - lastDebouncedTime > DEBOUNCE_DELAY) {
-    flagBackLight = 1;
-    flagTimeOffBackLight = 1;
-  }
-  lastDebouncedTime = millis();
-}
-
-void configureMeasure() 
-{
-  pinMode (SELECT_PIN0, OUTPUT);
-  pinMode(SELECT_PIN1, OUTPUT);
-  pinMode(SELECT_PIN2, OUTPUT);
-  pinMode(ANALOG_PIN, INPUT);
-}
+//void configureButtonDisplay()
+//{
+//  pinMode(DISPLAY_PIN, INPUT);
+//  attachInterrupt(digitalPinToInterrupt(DISPLAY_PIN), buttonDisplayHandler, HIGH);
+//}
+//
+//void buttonDisplayHandler()
+//{
+//  if (millis() - lastDebouncedTime > DEBOUNCE_DELAY) {
+//    flagBackLight = 1;
+//    flagTimeOffBackLight = 1;
+//  }
+//  lastDebouncedTime = millis();
+//}
 
 void lcd_timing_backlight(int timeOff_s)
 {
@@ -107,6 +128,7 @@ void lcd_timing_backlight(int timeOff_s)
 void loop() {
   if (flagMeasure == 1) {
     lcd_onBacklight();
+    lcd_clear_display();
     flagBackLight = 1;
     flagTimeOffBackLight = 1;
     
