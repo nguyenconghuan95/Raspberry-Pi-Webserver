@@ -11,6 +11,11 @@ void lcd_init() {
   lcd.clear();
 }
 
+void lcd_clear_display() 
+{
+  lcd.clear();
+}
+
 void lcd_display_measure(int zone, int temp, int humid, uint16_t lux) {  
   lcd.backlight();
   lcd.setCursor(0, zone - 1);
@@ -36,6 +41,12 @@ void lcd_delete_oneChar(int pos, int row)
 {
   lcd.setCursor(pos, row);
   lcd.print(" ");
+}
+
+void lcd_write_str(int pos, int row, String str)
+{
+  lcd.setCursor(pos, row);
+  lcd.print(str);
 }
 
 void lcd_onBacklight() {

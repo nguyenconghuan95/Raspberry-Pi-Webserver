@@ -6,6 +6,7 @@
 
 
 void lcd_init();
+void lcd_clear_display();
 void lcd_display_measure(int zone, int temp, int humid, uint16_t lux);
 void lcd_onBacklight();
 void lcd_offBacklight();
@@ -13,6 +14,7 @@ void lcd_display_wifiSetup();
 void lcd_write_oneChar(int pos, int row, char symbol);
 void lcd_delete_oneChar(int pos, int row);
 void lcd_scrollLeft() ;
+void lcd_write_str(int pos, int row, String str);
 
 
 #endif
