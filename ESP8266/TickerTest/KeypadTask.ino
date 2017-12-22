@@ -45,64 +45,79 @@ int numberOfElementsIn(char k[][9], int row)
   return count;
 }
 
-char getChar()
+int getChar()
 {
-  unsigned long lastPushTime = millis();
-  int valueKey = readKeyPushed();
-  char realChar;
+  int incomingByte;
+  if (Serial.available() > 0) {
+                // đọc chữ liệu
+                incomingByte = Serial.read();
 
-  char Char[12][9] = {{0x20, '0'},
-                      {'!', '@', '$', '%', '^', '&', '?', '~', '1'},
-                      {'a', 'b', 'c', '2'},
-                      {'d', 'e', 'f', '3'},
-                      {'g', 'h', 'i', '4'},
-                      {'j', 'k', 'l', '5'},
-                      {'m', 'n', 'o', '6'},
-                      {'p', 'q', 'r', 's', '7'},
-                      {'t', 'u', 'v', '8'},
-                      {'w', 'x', 'y', 'z', '9'},
-                      {0x7F, 0x10, '*'},
-                      {'#', 0x0D}};
-
-  int i = valueKey;
-  int j = 0;
-  if (valueKey != NULL) {
-    State buttonState = PUSHED;
-    realChar = Char[i][j];
-    buttonState = ON_HOLD;
-    while (millis() - lastPushTime < ONEKEY_PUSH_PERIOD) {
-      delay(100);
-      valueKey = readKeyPushed();
-      switch (buttonState) {
-        case PUSHED:
-        {
-          if (valueKey == i) {
-            lastPushTime = millis();
-            (j < numberOfElementsIn(Char, i)) ? j++ : j=0;
-            realChar = Char[i][j];
-          }
-          buttonState = ON_HOLD;
-          break;
+                // trả về những gì nhận được
+                Serial.print("Toi nhan duoc: ");
+                if (incomingByte == -1) {
+                  Serial.println("Toi khong nhan duoc gi ca");
+                  return NULL;
+                } else  {
+                  Serial.println(char(incomingByte));
+                  return incomingByte;
+                }
         }
-        case ON_HOLD:
-        {
-          if (valueKey == NULL)
-            buttonState = UNPUSHED;
-          break;
-        }
-        case UNPUSHED:
-        {
-          if (valueKey != NULL)
-            buttonState = PUSHED;
-          break;
-        }
-     }
-     if ((valueKey != i) && (valueKey != NULL))
-       break;     
-    }
-    return realChar;
-  }
-  else
-    return NULL;
+//  unsigned long lastPushTime = millis();
+//  int valueKey = readKeyPushed();
+//  char realChar;
+//
+//  char Char[12][9] = {{0x20, '0'},
+//                      {'1', '!', '@', '$', '%', '^', '&', '?', '~'},
+//                      {'a', 'b', 'c', '2'},
+//                      {'d', 'e', 'f', '3'},
+//                      {'g', 'h', 'i', '4'},
+//                      {'j', 'k', 'l', '5'},
+//                      {'m', 'n', 'o', '6'},
+//                      {'p', 'q', 'r', 's', '7'},
+//                      {'t', 'u', 'v', '8'},
+//                      {'w', 'x', 'y', 'z', '9'},
+//                      {0x7F, 0x10, '*'},
+//                      {'#', 0x0D}};
+//
+//  int i = valueKey;
+//  int j = 0;
+//  if (valueKey != NULL) {
+//    State buttonState = PUSHED;
+//    realChar = Char[i][j];
+//    buttonState = ON_HOLD;
+//    while (millis() - lastPushTime < ONEKEY_PUSH_PERIOD) {
+//      delay(100);
+//      valueKey = readKeyPushed();
+//      switch (buttonState) {
+//        case PUSHED:
+//        {
+//          if (valueKey == i) {
+//            lastPushTime = millis();
+//            (j < numberOfElementsIn(Char, i)) ? j++ : j=0;
+//            realChar = Char[i][j];
+//          }
+//          buttonState = ON_HOLD;
+//          break;
+//        }
+//        case ON_HOLD:
+//        {
+//          if (valueKey == NULL)
+//            buttonState = UNPUSHED;
+//          break;
+//        }
+//        case UNPUSHED:
+//        {
+//          if (valueKey != NULL)
+//            buttonState = PUSHED;
+//          break;
+//        }
+//     }
+//     if ((valueKey != i) && (valueKey != NULL))
+//       break;     
+//    }
+//    return realChar;
+//  }
+//  else
+//    return NULL;
 }
 
