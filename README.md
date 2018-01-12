@@ -17,7 +17,7 @@ List of modules in this project:
 * 2 x BH1750
 * 2 x humid sensors
 * 6 x relay to control devices
-<br>
+
 **Software**<br>
 The Webserver of this project was built on PHP, HTML, Javascript and save data to MySQL so you need to install PHP and MySQL on your server to make it work. <br>
 To install PHP and MySQL you can see this tutorial [How To Install Linux, Apache, MySQL, PHP (LAMP)](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
