@@ -20,6 +20,8 @@ List of modules in this project:
 
 **Software**<br>
 The Webserver of this project was built on PHP, HTML, Javascript and save data to MySQL so you need to install PHP and MySQL on your server to make it work. <br>
-To install PHP and MySQL you can see this tutorial [How To Install Linux, Apache, MySQL, PHP (LAMP)](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
+To install PHP and MySQL you can see this tutorial [How To Install Linux, Apache, MySQL, PHP (LAMP)](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)<br>
+To compile and upload code to ESP8266, you need Arduino IDE and ESP8266 board package installed. Download Arduino IDE from [here](https://www.arduino.cc/en/Main/Software) and see [ESP8266 nodeMCU with IDE tutorial](https://learn.adafruit.com/adafruit-huzzah-esp8266-breakout/using-arduino-ide) to install the package.
+
 
 ## 
