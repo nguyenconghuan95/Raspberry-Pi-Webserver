@@ -183,8 +183,8 @@
                     	<option value='Sat'>Saturday</option>
                     	<option value='Sun'>Sunday</option>
              	</select><br>
-        		Date:<input type="date" name="date" style="width: 50%;"><br>
-        		Time:<input type="time" name="time" style="width: 50%;"><br><br>
+        		Date:<input type="date" name="date" style="width: 50%;" value="now"><br>
+        		Time:<input type="time" name="time" style="width: 50%;" value="now"><br><br>
         		<input type="submit" value="Submit" style="border-radius: 10px;"></input>
     		</div>
     		</form>
@@ -214,7 +214,7 @@
                         <option value='Sun'>Sunday</option>
                 </select>&nbsp;&nbsp;&nbsp;
 				Time-Off:&nbsp;
-				<input type="time" name="timeOff"/><br><br>
+				<input type="time" name="timeOff" value="now"/><br><br>
 				Device:&nbsp;
 				<select name="device">
 					<option value="light1">Light 1</option>
@@ -226,6 +226,7 @@
 				</select><br><br>
 				<input type="submit" name="addSchedule" value="Add"/>&nbsp;
                 <input type="submit" name="deleteSchedule" value="Delete"/>
+                <input type="submit" name="deleteScheduleAll" value="Delete All"/>
 			</form>
 			<br>
 			<?php

@@ -32,7 +32,7 @@
 	$result = mysqli_query($conn, $sql);
 	$count = mysqli_num_rows($result);
 
-	while ($count >= 10) {
+	while ($count >= 16) {
 		$sql = "DELETE FROM measurement WHERE ZONE LIMIT 1";
 		mysqli_query($conn, $sql);
 		$count--;

@@ -10,20 +10,38 @@
         echo("Failed to connect to MySQL: ". mysqli_connect_error());
     }
 
-	$sql = "SELECT LED, STATUS FROM led WHERE CHANGED=1";
-    $result = mysqli_query($conn, $sql);
+    if (isset($_GET["first"])) {
+        $sql = "SELECT LED, STATUS FROM led";
+        $result = mysqli_query($conn, $sql);
+        
+        $data = array();
+        foreach ($result as $row) {
+            $data[] = $row;
+        }
     
-	$data = array();
-    foreach ($result as $row) {
-        $data[] = $row;
+        $sql = "UPDATE led SET CHANGED=0 WHERE CHANGED=1";
+        mysqli_query($conn, $sql);
+    
+        mysqli_close($conn);
+    
+        print json_encode($data);
     }
-
-    $sql = "UPDATE led SET CHANGED=0 WHERE CHANGED=1";
-    mysqli_query($conn, $sql);
-
-    mysqli_close($conn);
-
-    print json_encode($data);
+    else {
+        $sql = "SELECT LED, STATUS FROM led WHERE CHANGED=1";
+        $result = mysqli_query($conn, $sql);
+        
+        $data = array();
+        foreach ($result as $row) {
+            $data[] = $row;
+        }
+    
+        $sql = "UPDATE led SET CHANGED=0 WHERE CHANGED=1";
+        mysqli_query($conn, $sql);
+    
+        mysqli_close($conn);
+    
+        print json_encode($data);
+    }
 
     
 ?>
