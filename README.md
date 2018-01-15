@@ -28,5 +28,12 @@ To compile and upload code to ESP8266, you need Arduino IDE and ESP8266 board pa
 Clone this repository, code in html and Python folder is the code for Webserver, copy these two folders to your Webserver folder. Compile and upload TickerTest file in ESP8266 folder to your ESP8266 module.
 
 ## Usage
-
+### Hardware
+Connection between the modules
+<p align='center'>
+  <img width='480' height='360' src="https://github.com/nguyenconghuan95/Raspberry-Pi-Webserver/blob/master/img/raspCapture.PNG"><br>
+  <i>Schematic for connection between Raspberry Pi and modules</i><br>
+  <img width='480' height='360' src="https://github.com/nguyenconghuan95/Raspberry-Pi-Webserver/blob/master/img/espCapture.PNG"><br>
+  <i>Schematic for connection between ESP8266 nodeMCU and modules</i>
+</p>
 

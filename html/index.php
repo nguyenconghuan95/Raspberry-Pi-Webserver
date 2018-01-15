@@ -1,37 +1,30 @@
 <!DOCTYPE html>
 <?php
-	$servername = "localhost";
-    $username = "admin";
-    $password = "admin";
-    $dbname = "smartGarden";
+	require_once "DB_mysql.php";
+    require_once "config.inc.php";
 
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
+	$db = new DB_mysql();
 
-	$sql = "SELECT STATUS FROM led";
-	$result = mysqli_query($conn, $sql);
-	$i = 0;
-	while ($status = mysqli_fetch_array($result)) {
-		$state[$i] = $status[0];
-		$i = $i + 1;
-	}
+    $conn = $db -> db_connect();
 
+	$sql = "SELECT STATUS FROM $tbl_device";
+	$state = $db -> db_select_fetch_array($conn, $sql);
 
-	$sql = "SELECT * FROM limitIndex WHERE ZONE=1";
-	$result = mysqli_query($conn, $sql);
-	$a = mysqli_fetch_array($result);
-	$temp1 = $a[1];
-	$humid1 = $a[2];
-    $lux1High = $a[3];
-    $lux1Low = $a[4];
+	$sql = "SELECT * FROM $tbl_limit WHERE ZONE=1";
+	$result = $db -> db_select_fetch_array($conn, $sql);
+	$temp1 = $result[1];
+	$humid1 = $result[2];
+    $lux1High = $result[3];
+    $lux1Low = $result[4];
+    $manualControlFlag1 = $result[5];
 
 	$sql = "SELECT * FROM limitIndex WHERE ZONE=2";
-    $result = mysqli_query($conn, $sql);
-    $a = mysqli_fetch_array($result);
-    $temp2 = $a[1];
-    $humid2 = $a[2];
-    $lux2High = $a[3];
-    $lux2Low = $a[4];
-
+    $result = $db -> db_select_fetch_array($conn, $sql);
+	$temp2 = $result[1];
+	$humid2 = $result[2];
+    $lux2High = $result[3];
+    $lux2Low = $result[4];
+    $manualControlFlag2 = $result[5];
 ?>
 
 <html>
@@ -41,7 +34,7 @@
 	<link rel="stylesheet" type="text/css" href="css/demo_index.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap2-toggle.min.css">
 </head>
-<body>
+<body onload="javascript:setTimeout('location.reload(true);',30000);">
 	<header class="project-name">
 		<a href="#"><img class="logo" src="image/logo.png"/></a>
 	</header>
@@ -49,48 +42,79 @@
 		<div id="graph">
 			<div class="chart-container">
         		<canvas id="humidGraph"></canvas>
-				<canvas id="tempGraph" style="display: none;"></canvas>
 				<canvas id="luxGraph" style="display: none;"></canvas>
     		</div>
 			<button onclick="showHumidGraph()">Humidity</button>
-			<button onclick="showTempGraph()">Temperature</button>
 			<button onclick="showLuxGraph()">Luminosity</button>
 
 			<script type="text/javascript" src="js/showGraph.js"></script>
-    		<script type="text/javascript" src="js/jquery.min.js"></script>
-    		<script type="text/javascript" src="js/Chart.min.js"></script>
-    		<script type="text/javascript" src="js/linegraphHumid.js"></script>
+ 		  <script type="text/javascript" src="js/jquery.min.js"></script>
+   		<script type="text/javascript" src="js/Chart.min.js"></script>
+   		<script type="text/javascript" src="js/linegraphHumid.js"></script>
 			<script type="text/javascript" src="js/linegraphLux.js"></script>
-			<script type="text/javascript" src="js/linegraphTemp.js"></script>
 		</div>
 		<div id="info">
 			<table class="t01">
 				<tr>
-					<th rowspan="2">ZONE 1</th>
+					<th rowspan="2">ZONE 1 <br>
+                        <?php
+                            if ($manualControlFlag1 == 1)
+                                echo("<a href='enableManualControl.php?disableZone1'><button>Disable</button></a>");
+                            else    
+                                echo("<a href='enableManualControl.php?enableZone1'><button>Enable</button></a>");
+                        ?>
+
+                    </th>
 					<td><strong>Light</strong><br>
 						<label class="switch">
 						<?php
-							if ($state[0] == 'On') {
-								echo("<input type='checkbox' id='light1' checked>");
-								echo("<span class='slider'></span>");
-							}
-							else {
-								echo("<input type='checkbox' id='light1'>");
-                                echo("<span class='slider'></span>");
-							}
+                            if ($manualControlFlag1 == 1) {
+                                if ($state[0] == 'On') {
+                                    echo("<input type='checkbox' id='light1' checked>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='light1'>");
+                                    echo("<span class='slider'></span>");
+                                }
+                            }
+                            else {
+                                if ($state[0] == 'On') {
+                                    echo("<input type='checkbox' id='light1' checked disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='light1' disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                            }
+							
 						?>
 					</td>
 					<td><strong>Hose</strong><br>
                         <label class="switch">
                         <?php
-                            if ($state[2] == 'On') {
-                                echo("<input type='checkbox' id='hose1' checked>");
-                                echo("<span class='slider'></span>");
+                            if ($manualControlFlag1 == 1) {
+                                if ($state[2] == 'On') {
+                                    echo("<input type='checkbox' id='hose1' checked>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='hose1'>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                             else {
-                                echo("<input type='checkbox' id='hose1'>");
-                                echo("<span class='slider'></span>");
+                                if ($state[2] == 'On') {
+                                    echo("<input type='checkbox' id='hose1' checked disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='hose1' disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
+                            
                         ?>
 
 					</td>
@@ -99,13 +123,25 @@
 					<td><strong>Sunshade</strong><br>
                         <label class="switch">
                         <?php
-                            if ($state[4] == 'On') {
-                                echo("<input type='checkbox' id='sunshade1' checked>");
-                                echo("<span class='slider'></span>");
+                            if ($manualControlFlag1 == 1) {
+                                if ($state[4] == 'On') {
+                                    echo("<input type='checkbox' id='sunshade1' checked>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='sunshade1'>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                             else {
-                                echo("<input type='checkbox' id='sunshade1'>");
-                                echo("<span class='slider'></span>");
+                                if ($state[4] == 'On') {
+                                    echo("<input type='checkbox' id='sunshade1' checked disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='sunshade1' disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                         ?>
 
@@ -117,31 +153,63 @@
                     </td>
 				</tr>
 				<tr>
-					<th rowspan="2">ZONE 2</th>
+					<th rowspan="2">ZONE 2 <br>
+                        <?php
+                            if ($manualControlFlag2 == 1)
+                               echo("<a href='enableManualControl.php?disableZone2'><button>Disable</button></a>");
+                            else    
+                                echo("<a href='enableManualControl.php?enableZone2'><button>Enable</button></a>");
+                        ?>
+                    </th>
 					<td><strong>Light</strong><br>
                         <label class="switch">
                         <?php
-                            if ($state[1] == 'On') {
-                                echo("<input type='checkbox' id='light2' checked>");
-                                echo("<span class='slider'></span>");
+                            if ($manualControlFlag2 == 1) {
+                                if ($state[1] == 'On') {
+                                    echo("<input type='checkbox' id='light2' checked>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='light2'>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                             else {
-                                echo("<input type='checkbox' id='light2'>");
-                                echo("<span class='slider'></span>");
+                                if ($state[1] == 'On') {
+                                    echo("<input type='checkbox' id='light2' checked disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='light2' disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
+                            
                         ?>
 
                     </td>
 					<td><strong>Hose</strong><br>
                         <label class="switch">
                         <?php
-                            if ($state[3] == 'On') {
-                                echo("<input type='checkbox' id='hose2' checked>");
-                                echo("<span class='slider'></span>");
+                            if ($manualControlFlag2 == 1) {
+                                if ($state[3] == 'On') {
+                                    echo("<input type='checkbox' id='hose2' checked>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='hose2'>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                             else {
-                                echo("<input type='checkbox' id='hose2'>");
-                                echo("<span class='slider'></span>");
+                                if ($state[3] == 'On') {
+                                    echo("<input type='checkbox' id='hose2' checked disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='hose2'disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                         ?>
 
@@ -151,13 +219,25 @@
 					<td><strong>Sunshade</strong><br>
                         <label class="switch">
                         <?php
-                            if ($state[5] == 'On') {
-                                echo("<input type='checkbox' id='sunshade2' checked>");
-                                echo("<span class='slider'></span>");
+                            if ($manualControlFlag2 == 1) {
+                                if ($state[5] == 'On') {
+                                    echo("<input type='checkbox' id='sunshade2' checked>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='sunshade2'>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                             else {
-                                echo("<input type='checkbox' id='sunshade2'>");
-                                echo("<span class='slider'></span>");
+                                if ($state[5] == 'On') {
+                                    echo("<input type='checkbox' id='sunshade2' checked disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
+                                else {
+                                    echo("<input type='checkbox' id='sunshade2' disabled>");
+                                    echo("<span class='slider'></span>");
+                                }
                             }
                         ?>
 
@@ -183,8 +263,8 @@
                     	<option value='Sat'>Saturday</option>
                     	<option value='Sun'>Sunday</option>
              	</select><br>
-        		Date:<input type="date" name="date" style="width: 50%;" value="now"><br>
-        		Time:<input type="time" name="time" style="width: 50%;" value="now"><br><br>
+        		Date:<input type="date" name="date" style="width: 50%;" value="now" required><br>
+        		Time:<input type="time" name="time" style="width: 50%;" value="now" required><br><br>
         		<input type="submit" value="Submit" style="border-radius: 10px;"></input>
     		</div>
     		</form>
@@ -202,7 +282,7 @@
                         <option value='Sun'>Sunday</option>
                 </select>&nbsp;&nbsp;&nbsp;
 				Time-On:&nbsp;
-				<input type="time" name="timeOn"/><br><br>
+				<input type="time" name="timeOn" required/><br><br>
 				Day-Off:&nbsp;
 				<select name="dayOff">");
                         <option value='Mon'>Monday</option>
@@ -214,7 +294,7 @@
                         <option value='Sun'>Sunday</option>
                 </select>&nbsp;&nbsp;&nbsp;
 				Time-Off:&nbsp;
-				<input type="time" name="timeOff" value="now"/><br><br>
+				<input type="time" name="timeOff" value="now" required/><br><br>
 				Device:&nbsp;
 				<select name="device">
 					<option value="light1">Light 1</option>
@@ -225,9 +305,9 @@
 					<option value="sunshade2">Sunshade 2</option>
 				</select><br><br>
 				<input type="submit" name="addSchedule" value="Add"/>&nbsp;
-                <input type="submit" name="deleteSchedule" value="Delete"/>
-                <input type="submit" name="deleteScheduleAll" value="Delete All"/>
-			</form>
+        <input type="submit" name="deleteSchedule" value="Delete"/>
+			</form><br>
+      <a href="/saveSchedule.php?all"><button>Delete all</button></a><br>
 			<br>
 			<?php
             $sql = "SELECT * FROM schedule";
@@ -261,24 +341,13 @@
 		<div id="configure">
 			<table class="t01">
 				<tr>
-					<th rowspan="4">ZONE 1</th>
-					<td><strong>Temperature</strong>
-						<form action="#" method="post">
-							<?php
-								echo("<input id='LimitTemp1'  type='range' min='0' max='100' step='1' value='".$temp1."'/>");
-								echo("<br><span id='LimitTemp1Range'>".$temp1."</span>");
-							?>
-						</form>
-					</td>
-				</tr>
-				<tr>
+					<th rowspan="3">ZONE 1</th>
 					<td><strong>Humidity</strong>
 						<form action="#" method="post">
                             <?php
                                 echo("<input id='LimitHumid1'  type='range' min='0' max='100' step='1' value='".$humid1."'/>");
                                 echo("<br><span id='LimitHumid1Range'>".$humid1."</span>");
                             ?>
-
                         </form>
 					</td>
 				</tr>
@@ -305,18 +374,7 @@
 					</td>
 				</tr>
 				<tr>
-                    <th rowspan="4">ZONE 2</th>
-                    <td><strong>Temperature</strong>
-                        <form action="#" method="post">
-                            <?php
-                                echo("<input id='LimitTemp2'  type='range' min='0' max='100' step='1' value='".$temp2."'/>");
-                                echo("<br><span id='LimitTemp2Range'>".$temp2."</span>");
-                            ?>
-
-                        </form>
-                    </td>
-                </tr>
-                <tr>
+                    <th rowspan="3">ZONE 2</th>
                     <td><strong>Humidity</strong>
                         <form action="#" method="post">
                             <?php
