@@ -1,20 +1,13 @@
  <?php
-    $servername = "localhost";
-    $username = "admin";
-    $password = "admin";
-    $dbname = "smartGarden";
+    require_once "DB_mysql.php";
+    require_once "config.inc.php";
 
-    //Create Connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+	$db = new DB_mysql();
 
-    //Check Connection
-    if ($conn->connect_error) {
-        die("Connection failed: ".$conn->connect_error);
-    }
-    echo("Connect Successful!!!<br>");
+    $conn = $db -> db_connect();
 
     if ($_POST["time"] == NULL) {
-        header("Location: http://smartgarden.dynu.net:8245");
+        header("Location: index.php");
         exit;
     }
     else {
@@ -23,32 +16,32 @@
 	    $sql3 = "UPDATE dateSetup SET TIME='".$_POST["time"]."' WHERE ID=1";
         $sql4 = "UPDATE dateSetup SET CHANGED=".$_GET["change"]." WHERE ID=1";
         
-        if ($conn->query($sql1) === TRUE) {
+        if ($db -> db_query($sql1) === TRUE) {
             echo("New record updated sucessfully!!!");
         }
         else {
-            echo("Error: " . $sql . "<br>". $conn->error);
+            echo("Error: " . $sql1 . "<br>". $conn->error);
         }
-	    if ($conn->query($sql2) === TRUE) {
+	    if ($db -> db_query($sql2) === TRUE) {
             echo("New record updated sucessfully!!!");
         }
         else {
-                echo("Error: " . $sql . "<br>". $conn->error);
+                echo("Error: " . $sql2 . "<br>". $conn->error);
         }
-	    if ($conn->query($sql3) === TRUE) {
+	    if ($db -> db_query($sql3) === TRUE) {
             echo("New record updated sucessfully!!!");
         }
         else {
-            echo("Error: " . $sql . "<br>". $conn->error);
+            echo("Error: " . $sql3 . "<br>". $conn->error);
         }
-	    if ($conn->query($sql4) === TRUE) {
+	    if ($db -> db_query($sql4) === TRUE) {
             echo("New record updated sucessfully!!!");
-			header("Location: http://smartgarden.dynu.net:8245");
+			header("Location: index.php");
 			exit;
         }
         else {
-            echo("Error: " . $sql . "<br>". $conn->error);
+            echo("Error: " . $sql4 . "<br>". $conn->error);
         }
     }
-    $conn->close();
+    $db -> db_close();
 ?>

@@ -1,23 +1,19 @@
 <?php
-    $servername = "localhost";
-    $username = "admin";
-    $password = "admin";
-    $dbname = "smartGarden";
+    require_once "DB_mysql.php";
+    require_once "config.inc.php";
 
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
+	$db = new DB_mysql();
 
-    if (mysqli_connect_errno()) {
-        echo("Failed to connect to MySQL: ". mysqli_connect_error());
-    }
+    $conn = $db -> db_connect();
 
-    $sql = "SELECT ZONE, TIME, TEMPERATURE FROM measurement";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT ZONE, TIME, TEMPERATURE FROM $tbl_measurement";
+    $result = $db -> db_query($conn, $sql);
 
     $data = array();
     foreach ($result as $row) {
         $data[] = $row;
     }
-    mysqli_close($conn);
+    $db -> db_close($conn);
 
     print json_encode($data);
 ?>

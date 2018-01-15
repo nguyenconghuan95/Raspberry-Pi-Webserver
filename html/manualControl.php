@@ -1,21 +1,16 @@
 <?php
-    $servername = "localhost";
-    $username = "admin";
-    $password = "admin";
-    $dbname = "smartGarden";
+   require_once "DB_mysql.php";
+   require_once "config.inc.php";
 
-    //Create Connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+   $db = new DB_mysql();
 
-    //Check Connection
-    if ($conn->connect_error) {
-        die("Connection failed: ".$conn->connect_error);
-    }
+   $conn = $db -> db_connect();
+
 	echo $_GET["device"];
     echo("Connect Successful!!!<br>");
-	$sql = "UPDATE led SET STATUS='". $_POST["action"] ."' WHERE LED='". $_POST["device"] ."'";
-	$sql1 = "UPDATE led SET CHANGED=1 WHERE LED='". $_POST["device"] . "'";
-	$conn->query($sql);
-	$conn->query($sql1);
-    $conn->close();
+	$sql = "UPDATE $tbl_device SET STATUS='". $_POST["action"] ."' WHERE LED='". $_POST["device"] ."'";
+	$sql1 = "UPDATE $tbl_device SET CHANGED=1 WHERE LED='". $_POST["device"] . "'";
+	$db -> db_query($conn, $sql);
+	$db -> db_query($conn, $sql1);
+    $db -> db_close($conn);
 ?>

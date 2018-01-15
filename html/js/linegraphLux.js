@@ -66,8 +66,8 @@ $(document).ready(function() {
                         yAxes: [{
                             ticks: {
                                 min: 0,
-                                max: 1000,
-                                stepSize: 100
+                                max: 5000,
+                                stepSize: 250
                             }
                         }]
                     }

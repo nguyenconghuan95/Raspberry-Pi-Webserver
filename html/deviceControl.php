@@ -25,10 +25,6 @@
             $sql = "SELECT * FROM limitIndex WHERE Zone=".$zone;
             $result = mysqli_query($conn, $sql);
             while ($parameter = mysqli_fetch_assoc($result)) {   
-                if ($_GET["temp"] > $parameter["LimitTemp"]) 
-                    $this -> sw($conn, "hose".$zone, "On");
-                else 
-                    $this -> sw($conn, "hose".$zone, "Off");
                 if ($_GET["humid"] < $parameter["LimitHumid"])
                     $this -> sw($conn, "hose".$zone, "On");
                 else
