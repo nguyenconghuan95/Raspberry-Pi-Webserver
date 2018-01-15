@@ -31,9 +31,9 @@ Clone this repository, code in html and Python folder is the code for Webserver,
 ### Hardware
 Connection between the modules
 <p align='center'>
-  <img width='480' height='360' src="img/raspCapture.png"><br>
+  <img width='480' height='360' src="https://github.com/nguyenconghuan95/Raspberry-Pi-Webserver/blob/master/img/raspCapture.PNG"><br>
   <i>Schematic for connection between Raspberry Pi and modules</i><br>
-  <img width='480' height='360' src="img/espCapture.png"><br>
+  <img width='480' height='360' src="https://github.com/nguyenconghuan95/Raspberry-Pi-Webserver/blob/master/img/espCapture.PNG"><br>
   <i>Schematic for connection between ESP8266 nodeMCU and modules</i>
 </p>
 
