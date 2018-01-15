@@ -37,3 +37,18 @@ Connection between the modules
   <i>Schematic for connection between ESP8266 nodeMCU and modules</i>
 </p>
 
+### Software
+First, set up static IP address for your server, you can see in this tutorial ["How do I set up static IP address?"](https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address). After doing this step, replace the IP address in TickerTest file by the one you have changed <br>
+Second, to make Webserver run with the hardware, run the main.py file in Python folder with command
+```
+python main.py
+```
+After doing these steps, the project is ready to work. The User Interface of the webserver with 5 main functions: show the measurement by graph, manual control, synchronize time, setup timer to ON/OFF device, set the limit parameters.
+<p align='center'>
+  <img width='360' height='200' src="https://github.com/nguyenconghuan95/Raspberry-Pi-Webserver/blob/master/img/web_part1.PNG"><br>
+  <i>UI part 1</i><br>
+  <img width='360' height='200' src="https://github.com/nguyenconghuan95/Raspberry-Pi-Webserver/blob/master/img/web_part2.PNG"><br>
+  <i>UI part 2</i>
+</p>
+
+
